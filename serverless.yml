@@ -50,9 +50,9 @@ functions:
     memorySize: 128 # mb
     timeout: 5 # seconds
     events:
-      - http:
+      - httpApi:
           path: users
-          method: GET
+          method: get
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -64,9 +64,9 @@ functions:
     memorySize: 128 # mb
     timeout: 5 # seconds
     events:
-      - http:
+      - httpApi:
           path: users
-          method: POST
+          method: post
     iamRoleStatements:
       - Effect: "Allow"
         Action:
