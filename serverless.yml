@@ -4,9 +4,17 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs14.x
+  stage: dev
+  region: us-east-1
+environment:
+    DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+
+custom:
+  usersTableName: real-users-table-${self:provider.stage}
 
 plugins:
   - serverless-auto-swagger
+  - serverless-iam-roles-per-function
 
 functions:
   api:
@@ -15,3 +23,64 @@ functions:
       - httpApi:
           path: /
           method: get
+    
+  welcome:
+    handler: src/lambda/api.welcome
+    name: welcome
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: api
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:GetItem"
+        Resource: "*"
+  getAllUsers:
+    handler: src/lambda/api.getAllUsers
+    name: get-all-users
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: users
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Scan"
+        Resource: "*"
+  register:
+    handler: src/lambda/api.register
+    name: register-user
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: users
+          method: POST
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:PutItem"
+        Resource: "*"
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.usersTableName}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: S
+          # - AttributeName: author
+          #   AttributeType: S
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 10
