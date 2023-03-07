@@ -23,6 +23,12 @@ functions:
       - httpApi:
           path: /
           method: get
+  greeting:
+    handler: src/lambda/api.welcome
+    events:
+      - httpApi:
+          path: /greeting
+          method: get
     
   welcome:
     handler: src/lambda/api.welcome
