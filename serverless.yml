@@ -10,7 +10,7 @@ provider:
     DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
 
 custom:
-  usersTableName: real-users-table-${self:provider.stage}
+  usersTableName: real-estate-users-table-${self:provider.stage}
 
 plugins:
   - serverless-auto-swagger
@@ -30,20 +30,20 @@ functions:
           path: /greeting
           method: get
     
-  welcome:
-    handler: src/lambda/api.welcome
-    name: welcome
-    memorySize: 128 # mb
-    timeout: 5 # seconds
-    events:
-      - http:
-          path: api
-          method: GET
-    iamRoleStatements:
-      - Effect: "Allow"
-        Action:
-          - "dynamodb:GetItem"
-        Resource: "*"
+  # welcome:
+  #   handler: src/lambda/api.welcome
+  #   name: welcome
+  #   memorySize: 128 # mb
+  #   timeout: 5 # seconds
+  #   events:
+  #     - http:
+  #         path: api
+  #         method: GET
+  #   iamRoleStatements:
+  #     - Effect: "Allow"
+  #       Action:
+  #         - "dynamodb:GetItem"
+  #       Resource: "*"
   getAllUsers:
     handler: src/lambda/api.getAllUsers
     name: get-all-users
