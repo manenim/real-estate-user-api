@@ -6,8 +6,6 @@ provider:
   runtime: nodejs14.x
   stage: dev
   region: us-east-1
-environment:
-    DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
 
 custom:
   usersTableName: real-users-table-${self:provider.stage}
