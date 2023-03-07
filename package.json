@@ -1,0 +1,10 @@
+{
+  "name": "real-user-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "manenim udoh <manenimabasi.udoh@stu.cu.edu.ng>",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-auto-swagger": "^2.12.0"
+  }
+}
