@@ -29,21 +29,7 @@ functions:
       - httpApi:
           path: /greeting
           method: get
-    
-  # welcome:
-  #   handler: src/lambda/api.welcome
-  #   name: welcome
-  #   memorySize: 128 # mb
-  #   timeout: 5 # seconds
-  #   events:
-  #     - http:
-  #         path: api
-  #         method: GET
-  #   iamRoleStatements:
-  #     - Effect: "Allow"
-  #       Action:
-  #         - "dynamodb:GetItem"
-  #       Resource: "*"
+
   getAllUsers:
     handler: src/lambda/api.getAllUsers
     name: get-all-users
@@ -70,7 +56,7 @@ functions:
     events:
       - httpApi:
           method: POST
-          path: /users
+          path: /register
     iamRoleStatements:
       - Effect: "Allow"
         Action:
