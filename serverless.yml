@@ -49,10 +49,12 @@ functions:
     name: get-all-users
     memorySize: 128 # mb
     timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
     events:
       - httpApi:
-          path: users
-          method: get
+          path: /users
+          method: GET
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -63,10 +65,12 @@ functions:
     name: register-user
     memorySize: 128 # mb
     timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
     events:
       - httpApi:
-          path: users
-          method: post
+          method: POST
+          path: /users
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -75,7 +79,7 @@ functions:
 
 resources:
   Resources:
-    UsersTable:
+    usersTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.usersTableName}
@@ -88,5 +92,5 @@ resources:
           - AttributeName: userId
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 10
-          WriteCapacityUnits: 10
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
