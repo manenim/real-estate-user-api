@@ -4,7 +4,6 @@ const {
     PutItemCommand,
     DeleteItemCommand,
     ScanCommand,
-    UpdateItemCommand,
     QueryCommand,
 } = require("@aws-sdk/client-dynamodb");
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
@@ -43,6 +42,36 @@ const getAllUsers = async () => {
 
     return response;
 
+}
+
+//get user by userId
+const getUserById = async (event) => {
+    const response = { statusCode: 200 };
+
+    try {
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            Key: marshall({
+                userId: event.pathParameters.userId,
+            }),
+        };
+        const { Item } = await db.send(new GetItemCommand(params));
+
+        response.body = JSON.stringify({
+            message: "Successfully retrieved user.",
+            data: unmarshall(Item),
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to retrieve user.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
 }
 
 // register a user
@@ -231,10 +260,13 @@ const deleteUser = async (event) => {
 
 
 
+
+
 //export all functions
 module.exports = {
     welcome,
     getAllUsers,
+    getUserById,
     register,
     getRenters,
     getBuyers,

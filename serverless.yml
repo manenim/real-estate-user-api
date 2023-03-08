@@ -30,6 +30,23 @@ functions:
           path: /greeting
           method: get
 
+  register:
+    handler: src/lambda/api.register
+    name: register-user
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+    events:
+      - httpApi:
+          method: POST
+          path: /register
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:PutItem"
+        Resource: "*"
+
   getAllUsers:
     handler: src/lambda/api.getAllUsers
     name: get-all-users
@@ -46,21 +63,25 @@ functions:
         Action:
           - "dynamodb:Scan"
         Resource: "*"
-  register:
-    handler: src/lambda/api.register
-    name: register-user
+
+  #get user by userId
+  getUser:
+    handler: src/lambda/api.getUser
+    name: getUser
     memorySize: 128 # mb
     timeout: 5 # seconds
     environment:
       DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
     events:
       - httpApi:
-          method: POST
-          path: /register
+          method: GET
+          path: /users/{userId}
     iamRoleStatements:
       - Effect: "Allow"
         Action:
-          - "dynamodb:PutItem"
+          - "dynamodb:Query"  # this is how you comment things in YAML
+          - "dynamodb:Scan"
+          - "dynamodb:Get*"
         Resource: "*"
 
   #renters function
