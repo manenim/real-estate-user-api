@@ -240,5 +240,4 @@ module.exports = {
     getBuyers,
     matchUsers,
     deleteUser,
-    updateUser,
 }
