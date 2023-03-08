@@ -150,6 +150,9 @@ resources:
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
             #adding property index
           - IndexName: propertyId-index
             KeySchema:
