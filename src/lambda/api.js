@@ -204,7 +204,7 @@ const deleteUser = async (event) => {
         const params = {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             Key: marshall({
-                id: event.pathParameters.id,
+                userId: event.pathParameters.id,
             }),
         };
         const deleteResult = await db.send(new DeleteItemCommand(params));
@@ -226,55 +226,6 @@ const deleteUser = async (event) => {
     return response;
 
 }
-
-//update a user
-const updateUser = async (event) => {
-    const response = { statusCode: 200 };
-    
-    try {
-        const body = JSON.parse(event.body);
-        const params = {
-            TableName: process.env.DYNAMODB_TABLE_NAME,
-            Key: marshall({
-                id: event.pathParameters.id,
-            }),
-            UpdateExpression: "set #userId = :userId, #name = :name, #DOB = :DOB, #role = :role, #location = :location, #propertyId = :propertyId",
-            ExpressionAttributeNames: {
-                "#userId": "userId",
-                "#name": "name",
-                "#DOB": "DOB",
-                "#role": "role",
-                "#location": "location",
-                "#propertyId": "propertyId",
-                
-            },
-            ExpressionAttributeValues: marshall({
-                ":name": body.name,
-                ":DOB": body.DOB,
-                ":role": body.role,
-                ":location": body.location,
-                ":propertyId": body.propertyId,
-            }),
-        };
-        const updateResult = await db.send(new UpdateItemCommand(params));
-
-        response.body = JSON.stringify({
-            message: "Successfully updated user.",
-            updateResult,
-        });
-    } catch (e) {
-        console.error(e);
-        response.statusCode = 500;
-        response.body = JSON.stringify({
-            message: "Failed to update user.",
-            errorMsg: e.message,
-            errorStack: e.stack,
-        });
-    }
-
-    return response;
-}
-
 
 
 

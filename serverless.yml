@@ -141,24 +141,6 @@ functions:
           - "dynamodb:DeleteItem"  
         Resource: "*"
 
-  #update function
-  updateUser:
-    handler: src/lambda/api.updateUser
-    name: updateUser
-    memorySize: 128 # mb
-    timeout: 5 # seconds
-    environment:
-      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
-    events:
-      - httpApi:
-          method: PUT
-          path: /users/{userId}
-    iamRoleStatements:
-      - Effect: "Allow"
-        Action:
-          - "dynamodb:UpdateItem"  
-        Resource: "*"
-
 resources:
   Resources:
     usersTable:
