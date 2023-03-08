@@ -68,10 +68,12 @@ functions:
     name: getRenters
     memorySize: 128 # mb
     timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
     events:
-      - http:
-          path: users/renters
+      - httpApi:
           method: GET
+          path: users/renters
     iamRoleStatements:
       - Effect: "Allow"
         Action:
