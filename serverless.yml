@@ -114,7 +114,7 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: /users/match
+          path: /property/{propertyId}
     iamRoleStatements:
       - Effect: "Allow"
         Action:
