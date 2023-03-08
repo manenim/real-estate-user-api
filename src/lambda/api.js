@@ -83,10 +83,13 @@ const getRenters = async () => {
         const params = {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             IndexName: "role-index",
+            KeyConditionExpression: "#role = :role",
+            ExpressionAttributeNames: {
+                '#role': 'role'
+            },
             ExpressionAttributeValues: marshall({
                 ":role":  "renter",
             }),
-            KeyConditionExpression: "#role = :role",
         };
         const command = new QueryCommand(params);
 
