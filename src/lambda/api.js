@@ -160,7 +160,6 @@ const matchUsers = async (event) => {
     const response = { statusCode: 200 };
 
     try {
-        const body = JSON.parse(event.body);
         const params = {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             IndexName: "propertyId-index",
