@@ -80,7 +80,7 @@ functions:
           - "dynamodb:Query"  # this is how you comment things in YAML
           - "dynamodb:Scan"
           - "dynamodb:Get*"
-        Resource: arn:aws:dynamodb:us-east-1:*:table/real-estate-users-table-dev/index/role-index
+        Resource: "*"
 
 resources:
   Resources:
