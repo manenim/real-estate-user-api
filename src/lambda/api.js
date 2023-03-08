@@ -155,6 +155,52 @@ const getBuyers = async () => {
 }
 
 
+// match only users with the same property id
+const matchUsers = async (event) => {
+    const response = { statusCode: 200 };
+
+    try {
+        const body = JSON.parse(event.body);
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            IndexName: "propertyId-index",
+            KeyConditionExpression: "#propertyId = :propertyId",
+            ExpressionAttributeNames: {
+                '#propertyId': 'propertyId'
+            },
+            ExpressionAttributeValues: marshall({
+                ":propertyId": event.pathParameters.propertyId,
+            }),
+        };
+        const command = new QueryCommand(params);
+
+        const { Items } = await db.send(command);
+
+        response.body = JSON.stringify({
+            message: "Successfully retrieved all users with the same property id.",
+            data: Items.map((item) => unmarshall(item)),
+            Items,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to retrieve users with the same property id.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+
+    }
+
+    return response;
+
+}
+
+
+
+
+
+
 
 
 
@@ -164,4 +210,5 @@ module.exports = {
     register,
     getRenters,
     getBuyers,
+    matchUsers,
 }

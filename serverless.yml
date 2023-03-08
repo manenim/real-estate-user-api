@@ -103,6 +103,26 @@ functions:
           - "dynamodb:Get*"
         Resource: "*"
 
+  #property function
+  mathcUsers:
+    handler: src/lambda/api.matchUsers
+    name: matchUsers
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+    events:
+      - httpApi:
+          method: GET
+          path: /users/match
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Query"  # this is how you comment things in YAML
+          - "dynamodb:Scan"
+          - "dynamodb:Get*"
+        Resource: "*"
+
 resources:
   Resources:
     usersTable:
@@ -113,6 +133,8 @@ resources:
           - AttributeName: userId
             AttributeType: S
           - AttributeName: role
+            AttributeType: S
+          - AttributeName: propertyId
             AttributeType: S
         KeySchema:
           - AttributeName: userId
@@ -131,3 +153,14 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
+            #adding property index
+          - IndexName: propertyId-index
+            KeySchema:
+              - AttributeName: propertyId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          
