@@ -115,6 +115,46 @@ const getRenters = async () => {
 }
 
 
+// get only users who are buyers
+const getBuyers = async () => {
+    const response = { statusCode: 200 };
+
+    try {
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            IndexName: "role-index",
+            KeyConditionExpression: "#role = :role",
+            ExpressionAttributeNames: {
+                '#role': 'role'
+            },
+            ExpressionAttributeValues: marshall({
+                ":role": "buyer",
+            }),
+        };
+        const command = new QueryCommand(params);
+
+        const { Items } = await db.send(command);
+        
+        response.body = JSON.stringify({
+            message: "Successfully retrieved all buyers.",
+            data: Items.map((item) => unmarshall(item)),
+            Items,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to retrieve buyers.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
+
+}
+
+
 
 
 
@@ -123,4 +163,5 @@ module.exports = {
     getAllUsers,
     register,
     getRenters,
+    getBuyers,
 }

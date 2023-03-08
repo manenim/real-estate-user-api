@@ -63,6 +63,7 @@ functions:
           - "dynamodb:PutItem"
         Resource: "*"
 
+  #renters function
   getRenters:
     handler: src/lambda/api.getRenters
     name: getRenters
@@ -74,6 +75,26 @@ functions:
       - httpApi:
           method: GET
           path: /users/renters
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Query"  # this is how you comment things in YAML
+          - "dynamodb:Scan"
+          - "dynamodb:Get*"
+        Resource: "*"
+  
+  #buyers function
+  getBuyers:
+    handler: src/lambda/api.getBuyers
+    name: getBuyers
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+    events:
+      - httpApi:
+          method: GET
+          path: /users/buyers
     iamRoleStatements:
       - Effect: "Allow"
         Action:
