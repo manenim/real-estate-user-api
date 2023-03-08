@@ -215,7 +215,6 @@ const deleteUser = async (event) => {
         });
     } catch (e) {
         console.error(e);
-        response.statusCode = 500;
         response.body = JSON.stringify({
             message: "Failed to delete user.",
             errorMsg: e.message,
