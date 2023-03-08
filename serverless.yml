@@ -104,7 +104,7 @@ functions:
         Resource: "*"
 
   #property function
-  mathcUsers:
+  mathUsers:
     handler: src/lambda/api.matchUsers
     name: matchUsers
     memorySize: 128 # mb
@@ -121,6 +121,42 @@ functions:
           - "dynamodb:Query"  # this is how you comment things in YAML
           - "dynamodb:Scan"
           - "dynamodb:Get*"
+        Resource: "*"
+
+  #delete function
+  deleteUser:
+    handler: src/lambda/api.deleteUser
+    name: deleteUser
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+    events:
+      - httpApi:
+          method: DELETE
+          path: /users/{userId}
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:DeleteItem"  
+        Resource: "*"
+
+  #update function
+  updateUser:
+    handler: src/lambda/api.updateUser
+    name: updateUser
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    environment:
+      DYNAMODB_TABLE_NAME: ${self:custom.usersTableName}
+    events:
+      - httpApi:
+          method: PUT
+          path: /users/{userId}
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:UpdateItem"  
         Resource: "*"
 
 resources:

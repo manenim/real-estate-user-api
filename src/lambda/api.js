@@ -176,7 +176,7 @@ const matchUsers = async (event) => {
         const { Items } = await db.send(command);
 
         response.body = JSON.stringify({
-            message: "Successfully retrieved all users with the same property id.",
+            message: "Successfully matched a buyer and renter interested in the same property.",
             data: Items.map((item) => unmarshall(item)),
             Items,
         });
@@ -184,7 +184,7 @@ const matchUsers = async (event) => {
         console.error(e);
         response.statusCode = 500;
         response.body = JSON.stringify({
-            message: "Failed to retrieve users with the same property id.",
+            message: "Failed to retrieve users.",
             errorMsg: e.message,
             errorStack: e.stack,
         });
@@ -196,6 +196,84 @@ const matchUsers = async (event) => {
 }
 
 
+//delete a user
+const deleteUser = async (event) => {
+    const response = { statusCode: 200 };
+
+    try {
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            Key: marshall({
+                id: event.pathParameters.id,
+            }),
+        };
+        const deleteResult = await db.send(new DeleteItemCommand(params));
+        
+        response.body = JSON.stringify({
+            message: "Successfully deleted user.",
+            deleteResult,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to delete user.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
+
+}
+
+//update a user
+const updateUser = async (event) => {
+    const response = { statusCode: 200 };
+    
+    try {
+        const body = JSON.parse(event.body);
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            Key: marshall({
+                id: event.pathParameters.id,
+            }),
+            UpdateExpression: "set #userId = :userId, #name = :name, #DOB = :DOB, #role = :role, #location = :location, #propertyId = :propertyId",
+            ExpressionAttributeNames: {
+                "#userId": "userId",
+                "#name": "name",
+                "#DOB": "DOB",
+                "#role": "role",
+                "#location": "location",
+                "#propertyId": "propertyId",
+                
+            },
+            ExpressionAttributeValues: marshall({
+                ":name": body.name,
+                ":DOB": body.DOB,
+                ":role": body.role,
+                ":location": body.location,
+                ":propertyId": body.propertyId,
+            }),
+        };
+        const updateResult = await db.send(new UpdateItemCommand(params));
+
+        response.body = JSON.stringify({
+            message: "Successfully updated user.",
+            updateResult,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to update user.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
+}
 
 
 
@@ -203,6 +281,7 @@ const matchUsers = async (event) => {
 
 
 
+//export all functions
 module.exports = {
     welcome,
     getAllUsers,
@@ -210,4 +289,6 @@ module.exports = {
     getRenters,
     getBuyers,
     matchUsers,
+    deleteUser,
+    updateUser,
 }
