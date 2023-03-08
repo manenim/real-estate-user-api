@@ -75,9 +75,48 @@ const register = async (event) => {
 }
 
 
+// get only users who are renters
+const getRenters = async () => {
+    const response = { statusCode: 200 };
+
+    try {
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            IndexName: "role-index",
+            ExpressionAttributeValues: marshall({
+                ":role":  "renter",
+            }),
+            KeyConditionExpression: "#role = :role",
+        };
+        const command = new QueryCommand(params);
+
+        const Items  = await db.send(command);
+
+        response.body = JSON.stringify({
+            message: "Successfully retrieved all renters.",
+            data: Items.map((item) => unmarshall(item)),
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to retrieve renters.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
+
+}
+
+
+
+
 
 module.exports = {
     welcome,
     getAllUsers,
     register,
+    getRenters,
 }

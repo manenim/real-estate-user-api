@@ -63,6 +63,23 @@ functions:
           - "dynamodb:PutItem"
         Resource: "*"
 
+  getRenters:
+    handler: src/lambda/api.getRenters
+    name: getRenters
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: users/renters
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Query"  # this is how you comment things in YAML
+          - "dynamodb:Scan"
+          - "dynamodb:Get*"
+        Resource: arn:aws:dynamodb:us-east-1:*:table/real-estate-users-table-dev/index/role-index
+
 resources:
   Resources:
     usersTable:
@@ -72,11 +89,22 @@ resources:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
-          # - AttributeName: author
-          #   AttributeType: S
+          - AttributeName: role
+            AttributeType: S
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+          #GSIs:
+        GlobalSecondaryIndexes:
+          - IndexName: role-index
+            KeySchema:
+              - AttributeName: role
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
