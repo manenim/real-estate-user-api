@@ -73,7 +73,7 @@ functions:
     events:
       - httpApi:
           method: GET
-          path: users/renters
+          path: /users/renters
     iamRoleStatements:
       - Effect: "Allow"
         Action:
