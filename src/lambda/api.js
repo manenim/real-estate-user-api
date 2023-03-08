@@ -168,7 +168,7 @@ const matchUsers = async (event) => {
                 "#propertyId": "propertyId"
             },
             ExpressionAttributeValues: marshall({
-                ":propertyId": "2",
+                ":propertyId": event.pathParameters.propertyId,
             }),
         };
         const command = new QueryCommand(params);
