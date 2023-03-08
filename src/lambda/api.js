@@ -204,7 +204,7 @@ const deleteUser = async (event) => {
         const params = {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             Key: marshall({
-                userId: event.pathParameters.id,
+                userId: event.pathParameters.userId,
             }),
         };
         const deleteResult = await db.send(new DeleteItemCommand(params));
