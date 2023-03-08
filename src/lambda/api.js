@@ -163,9 +163,9 @@ const matchUsers = async (event) => {
         const params = {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             IndexName: "propertyId-index",
-            KeyConditionExpression: "propertyId = :propertyId",
+            KeyConditionExpression: "#propertyId = :propertyId",
             ExpressionAttributeNames: {
-                "propertyId": "propertyId"
+                "#propertyId": "propertyId"
             },
             ExpressionAttributeValues: marshall({
                 ":propertyId": "2",
