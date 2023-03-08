@@ -90,7 +90,7 @@ const getRenters = async () => {
         };
         const command = new QueryCommand(params);
 
-        const Items  = await db.send(command);
+        const { Items }  = await db.send(command);
 
         response.body = JSON.stringify({
             message: "Successfully retrieved all renters.",
