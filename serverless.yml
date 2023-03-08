@@ -104,7 +104,7 @@ functions:
         Resource: "*"
 
   #property function
-  mathUsers:
+  mathcUsers:
     handler: src/lambda/api.matchUsers
     name: matchUsers
     memorySize: 128 # mb
