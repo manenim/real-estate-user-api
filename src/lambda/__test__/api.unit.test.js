@@ -1,4 +1,4 @@
-const { getUserById, register } = require('../api.js') 
+const { getUserById } = require('../api.js') 
 
 
 test('Responses is an object', () => {
