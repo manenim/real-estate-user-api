@@ -9,15 +9,34 @@ const {
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
 
-// create welcome route and return a welcome message
-const welcome = async () => {
-    return {
-        statusCode: 200,
-        body: JSON.stringify({
-            message: "Welcome to the serverless users API!",
-        }),
-    };
-};
+// register a user
+const register = async (event) => {
+    const response = { statusCode: 200 };
+
+    try {
+        const body = JSON.parse(event.body);
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            Item: marshall(body || {}),
+        };
+        const createResult = await db.send(new PutItemCommand(params));
+
+        response.body = JSON.stringify({
+            message: "Successfully created user.",
+            createResult,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to create user.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
+}
 
 //get all users
 const getAllUsers = async () => {
@@ -66,35 +85,6 @@ const getUserById = async (event) => {
         response.statusCode = 500;
         response.body = JSON.stringify({
             message: "Failed to retrieve user.",
-            errorMsg: e.message,
-            errorStack: e.stack,
-        });
-    }
-
-    return response;
-}
-
-// register a user
-const register = async (event) => {
-    const response = { statusCode: 200 };
-
-    try {
-        const body = JSON.parse(event.body);
-        const params = {
-            TableName: process.env.DYNAMODB_TABLE_NAME,
-            Item: marshall(body || {}),
-        };
-        const createResult = await db.send(new PutItemCommand(params));
-
-        response.body = JSON.stringify({
-            message: "Successfully created user.",
-            createResult,
-        });
-    } catch (e) {
-        console.error(e);
-        response.statusCode = 500;
-        response.body = JSON.stringify({
-            message: "Failed to create user.",
             errorMsg: e.message,
             errorStack: e.stack,
         });
@@ -264,10 +254,9 @@ const deleteUser = async (event) => {
 
 //export all functions
 module.exports = {
-    welcome,
+    register,
     getAllUsers,
     getUserById,
-    register,
     getRenters,
     getBuyers,
     matchUsers,

@@ -1,4 +1,5 @@
-service: real-user-api
+service: real-estate-user-api
+description: This is a serverless project that provides a RESTful API for managing user accounts and authentication. It uses AWS Lambda and API Gateway to handle requests, and DynamoDB for data storage.
 frameworkVersion: '3'
 
 provider:
@@ -17,19 +18,6 @@ plugins:
   - serverless-iam-roles-per-function
 
 functions:
-  api:
-    handler: index.handler
-    events:
-      - httpApi:
-          path: /
-          method: get
-  greeting:
-    handler: src/lambda/api.welcome
-    events:
-      - httpApi:
-          path: /greeting
-          method: get
-
   register:
     handler: src/lambda/api.register
     name: register-user
@@ -41,6 +29,7 @@ functions:
       - httpApi:
           method: POST
           path: /register
+          description: "Register a new user"
     iamRoleStatements:
       - Effect: "Allow"
         Action:

@@ -4,7 +4,11 @@
   "main": "index.js",
   "author": "manenim udoh <manenimabasi.udoh@stu.cu.edu.ng>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
+    "jest": "^29.5.0",
     "serverless-auto-swagger": "^2.12.0"
   },
   "dependencies": {
