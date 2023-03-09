@@ -28,7 +28,7 @@ functions:
       - httpApi:
           method: POST
           path: /register
-          description: "Register a new user"
+          description: "You can Register a new user whith this endpoint. you need to pass the following body: {\"userId\": \"21\", \"name\": \"John Doe\", \"DOB\": \"6/02/1960\", \"role\": \"renter\",\"location\": \"Abuja\", \"propertyId\": \"52\"}"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -46,6 +46,7 @@ functions:
       - httpApi:
           path: /users
           method: GET
+          description: "You can get all registered users on the DB with this endpoint"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -64,6 +65,7 @@ functions:
       - httpApi:
           method: GET
           path: /users/{userId}
+          description: "You can get a registered user by userId with this endpoint"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -84,6 +86,7 @@ functions:
       - httpApi:
           method: GET
           path: /users/renters
+          description: "You can get all registered renters on the DB with this endpoint"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -104,6 +107,7 @@ functions:
       - httpApi:
           method: GET
           path: /users/buyers
+          description: "You can get all registered buyers on the DB with this endpoint"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -124,6 +128,7 @@ functions:
       - httpApi:
           method: GET
           path: /property/{propertyId}
+          description: "You can get a registered renter and buyer interested in the same property by providing the propertyId. You can test this endpoint with propertyId 2"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -144,6 +149,7 @@ functions:
       - httpApi:
           method: DELETE
           path: /users/{userId}
+          description: "You can delete a registered user by userId with this endpoint"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -156,7 +162,6 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.usersTableName}
-        Description: My api gateway description 
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
