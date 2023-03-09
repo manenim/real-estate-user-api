@@ -1,4 +1,4 @@
-service: real-estate-user-api
+service: real-user-api
 description: This is a serverless project that provides a RESTful API for managing user accounts and authentication. It uses AWS Lambda and API Gateway to handle requests, and DynamoDB for data storage.
 frameworkVersion: '3'
 
