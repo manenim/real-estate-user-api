@@ -1,12 +1,12 @@
-#Real Estate User API
+Real Estate User API
 ====================
 
-###Introduction
+Introduction
 ------------
 
 This project is a backend application that provides endpoints for a consumer-based web application for the real estate industry. The platform allows renters and buyers to find properties for rent or sale, respectively. The application has two types of users: renters and buyers. Renters can only rent properties listed on the platform, while buyers can purchase properties listed on the platform. The application has endpoints to handle registration, retrieval of renters and buyers list, and matching of renters and buyers for the same property.
 
-###Features
+Features
 --------
 
 -   Renters and buyers can use the platform to find properties for rent or sale, respectively.
@@ -15,7 +15,7 @@ This project is a backend application that provides endpoints for a consumer-bas
 -   The platform has endpoints to handle registration, retrieval of renters and buyers list, and matching of renters and buyers for the same property.
 -   The backend of the platform uses Node, Lambda function on AWS Serverless platform, and DynamoDB as the database.
 
-###Endpoints
+Endpoints
 ---------
 
 -   POST - <https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/register> - Accepts registration requests from both renters and buyers. Stores information in a database for future retrieval.
