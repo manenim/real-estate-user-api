@@ -28,7 +28,7 @@ functions:
       - httpApi:
           method: POST
           path: /register
-          description: "You can Register a new user whith this endpoint. you need to pass the following body: {\"userId\": \"21\", \"name\": \"John Doe\", \"DOB\": \"6/02/1960\", \"role\": \"renter\",\"location\": \"Abuja\", \"propertyId\": \"52\"}"
+          description: "You can Register a new user with this endpoint. you need to pass the following body: {\"userId\": \"1018\", \"name\": \"John Doe\", \"DOB\": \"6/02/1960\", \"role\": \"renter\",\"location\": \"Abuja\", \"propertyId\": \"115\"}"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -128,7 +128,7 @@ functions:
       - httpApi:
           method: GET
           path: /property/{propertyId}
-          description: "You can get a registered renter and buyer interested in the same property by providing the propertyId. You can test this endpoint with propertyId 2"
+          description: "You can get a registered renter and buyer interested in the same property by providing the propertyId. You can test this endpoint with propertyId 103"
     iamRoleStatements:
       - Effect: "Allow"
         Action:
