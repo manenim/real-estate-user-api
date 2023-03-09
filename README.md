@@ -1,92 +1,41 @@
-<!--
-title: 'AWS Simple HTTP Endpoint example in NodeJS'
-description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: nodeJS
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+Real Estate User API
+====================
 
-# Serverless Framework Node HTTP API on AWS
+Introduction
+------------
 
-This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
+This project is a backend application that provides endpoints for a consumer-based web application for the real estate industry. The platform allows renters and buyers to find properties for rent or sale, respectively. The application has two types of users: renters and buyers. Renters can only rent properties listed on the platform, while buyers can purchase properties listed on the platform. The application has endpoints to handle registration, retrieval of renters and buyers list, and matching of renters and buyers for the same property.
 
-This template does not include any kind of persistence (database). For more advanced examples, check out the [serverless/examples repository](https://github.com/serverless/examples/) which includes Typescript, Mongo, DynamoDB and other examples.
+Features
+--------
 
-## Usage
+-   Renters and buyers can use the platform to find properties for rent or sale, respectively.
+-   The platform has two types of users: renters and buyers.
+-   Renters can only rent properties listed on the platform, while buyers can purchase properties listed on the platform.
+-   The platform has endpoints to handle registration, retrieval of renters and buyers list, and matching of renters and buyers for the same property.
+-   The backend of the platform uses Node, Lambda function on AWS Serverless platform, and DynamoDB as the database.
 
-### Deployment
+Endpoints
+---------
 
-```
-$ serverless deploy
-```
+-   POST - <https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/register> - Accepts registration requests from both renters and buyers. Stores information in a database for future retrieval.
+-   GET - <https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/users> - Fetches all users on the Database
+-   GET - [https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/users/{userId}](https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/users/%7BuserId%7D) - Retrieves a user by Id
+-   GET - <https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/users/renters> - Retrieves list of all renters
+-   GET - <https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/users/buyers> - Retrieves list of all buyers
+-   GET - [https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/property/{propertyId}](https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/property/%7BpropertyId%7D) - Checks and matches renters and buyers who are interested in the same property.
+-   DELETE - [https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/users/{userId}](https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/users/%7BuserId%7D) - Deletes a user
+-   GET - <https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/swagger> - Link to the Swagger Documentation of the project
+-   GET - <https://1ci7zlzg7d.execute-api.us-east-1.amazonaws.com/swagger.json> - Fetches the Swagger JSON.
 
-After deploying, you should see output similar to:
+Structure and Best Practices
+----------------------------
 
-```bash
-Deploying aws-node-http-api-project to stage dev (us-east-1)
+The code is well-structured, easy to understand, and follows best practices. Unit tests have been implemented with Jest to ensure that the application meets requirements and functions as expected. Additionally, a CI/CD pipeline has been implemented with Github actions that automates two unit tests.
 
-✔ Service deployed to stack aws-node-http-api-project-dev (152s)
+Getting Started
+---------------
 
-endpoint: GET - https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/
-functions:
-  hello: aws-node-http-api-project-dev-hello (1.9 kB)
-```
-
-_Note_: In current form, after deployment, your API is public and can be invoked by anyone. For production deployments, you might want to configure an authorizer. For details on how to do that, refer to [http event docs](https://www.serverless.com/framework/docs/providers/aws/events/apigateway/).
-
-### Invocation
-
-After successful deployment, you can call the created application via HTTP:
-
-```bash
-curl https://xxxxxxx.execute-api.us-east-1.amazonaws.com/
-```
-
-Which should result in response similar to the following (removed `input` content for brevity):
-
-```json
-{
-  "message": "Go Serverless v2.0! Your function executed successfully!",
-  "input": {
-    ...
-  }
-}
-```
-
-### Local development
-
-You can invoke your function locally by using the following command:
-
-```bash
-serverless invoke local --function hello
-```
-
-Which should result in response similar to the following:
-
-```
-{
-  "statusCode": 200,
-  "body": "{\n  \"message\": \"Go Serverless v3.0! Your function executed successfully!\",\n  \"input\": \"\"\n}"
-}
-```
-
-
-Alternatively, it is also possible to emulate API Gateway and Lambda locally by using `serverless-offline` plugin. In order to do that, execute the following command:
-
-```bash
-serverless plugin install -n serverless-offline
-```
-
-It will add the `serverless-offline` plugin to `devDependencies` in `package.json` file as well as will add it to `plugins` in `serverless.yml`.
-
-After installation, you can start local emulation with:
-
-```
-serverless offline
-```
-
-To learn more about the capabilities of `serverless-offline`, please refer to its [GitHub repository](https://github.com/dherault/serverless-offline).
+1.  Clone the repository
+2.  Install dependencies using `yarn`
+3.  Run tests using `yarn test`
