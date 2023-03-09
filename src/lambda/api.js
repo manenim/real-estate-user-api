@@ -117,7 +117,6 @@ const getRenters = async () => {
         response.body = JSON.stringify({
             message: "Successfully retrieved all renters.",
             data: Items.map((item) => unmarshall(item)),
-            Items
         });
     } catch (e) {
         console.error(e);
@@ -157,7 +156,6 @@ const getBuyers = async () => {
         response.body = JSON.stringify({
             message: "Successfully retrieved all buyers.",
             data: Items.map((item) => unmarshall(item)),
-            Items,
         });
     } catch (e) {
         console.error(e);
@@ -197,7 +195,6 @@ const matchUsers = async (event) => {
         response.body = JSON.stringify({
             message: "Successfully matched a buyer and renter interested in the same property.",
             data: Items.map((item) => unmarshall(item)),
-            Items,
         });
     } catch (e) {
         console.error(e);
